@@ -1,0 +1,15 @@
+{
+  "requestId": "AR-TC07",
+  "patientRef": "PATIENT-123",
+  "patientAge": 34,
+  "department": "GENERAL_MEDICINE",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "MORNING",
+  "symptomsSummary": "Synthetic: headache",
+  "painScore": 2,
+  "symptomDurationDays": 3,
+  "chestPain": false,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": false
+}

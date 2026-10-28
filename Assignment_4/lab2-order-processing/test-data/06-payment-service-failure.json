@@ -1,0 +1,10 @@
+{
+  "orderId": "ORD-TC06",
+  "customerRef": "CUST-1006",
+  "customerCategory": "PLATINUM",
+  "deliveryPreference": "SAME_DAY",
+  "paymentToken": "tok_test_visa_ok",
+  "shippingPostcode": "560001",
+  "productId": "P-300",
+  "quantity": 1
+}

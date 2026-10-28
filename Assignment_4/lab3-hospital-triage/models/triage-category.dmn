@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_TriageCategory" name="Triage category" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.40.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="triage-category-decision" name="Triage category decision">
+    <description>EDUCATIONAL RULES FOR A SIMULATED WORKFLOW ONLY - NOT CLINICAL GUIDANCE. Hit policy FIRST: red-flag indicators (T1-T5) give URGENT_ASSESSMENT, moderate indicators (T6-T10) give PRIORITY_REVIEW, everything else is ROUTINE. maxWaitDays is the booking window used when asking the scheduling API for slots.</description>
+    <decisionTable id="DecisionTable_Triage" hitPolicy="FIRST">
+      <input id="Input_ChestPain" label="Chest pain">
+        <inputExpression id="InputExpression_ChestPain" typeRef="boolean"><text>chestPain</text></inputExpression>
+      </input>
+      <input id="Input_Breathing" label="Breathing difficulty">
+        <inputExpression id="InputExpression_Breathing" typeRef="boolean"><text>breathingDifficulty</text></inputExpression>
+      </input>
+      <input id="Input_Bleeding" label="Severe bleeding">
+        <inputExpression id="InputExpression_Bleeding" typeRef="boolean"><text>severeBleeding</text></inputExpression>
+      </input>
+      <input id="Input_Pain" label="Pain score (0-10)">
+        <inputExpression id="InputExpression_Pain" typeRef="number"><text>painScore</text></inputExpression>
+      </input>
+      <input id="Input_Fever" label="High fever">
+        <inputExpression id="InputExpression_Fever" typeRef="boolean"><text>highFever</text></inputExpression>
+      </input>
+      <input id="Input_Age" label="Patient age">
+        <inputExpression id="InputExpression_Age" typeRef="number"><text>patientAge</text></inputExpression>
+      </input>
+      <input id="Input_Duration" label="Symptom duration (days)">
+        <inputExpression id="InputExpression_Duration" typeRef="number"><text>symptomDurationDays</text></inputExpression>
+      </input>
+      <output id="Output_Category" label="Triage category" name="triageCategory" typeRef="string">
+        <outputValues id="UnaryTests_Category"><text>"URGENT_ASSESSMENT","PRIORITY_REVIEW","ROUTINE"</text></outputValues>
+      </output>
+      <output id="Output_Reason" label="Reason" name="triageReason" typeRef="string" />
+      <output id="Output_MaxWait" label="Max wait (days)" name="maxWaitDays" typeRef="number" />
+      <rule id="Rule_T1">
+        <description>T1: chest pain</description>
+        <inputEntry id="T1_1"><text>true</text></inputEntry>
+        <inputEntry id="T1_2"><text>-</text></inputEntry>
+        <inputEntry id="T1_3"><text>-</text></inputEntry>
+        <inputEntry id="T1_4"><text>-</text></inputEntry>
+        <inputEntry id="T1_5"><text>-</text></inputEntry>
+        <inputEntry id="T1_6"><text>-</text></inputEntry>
+        <inputEntry id="T1_7"><text>-</text></inputEntry>
+        <outputEntry id="T1_o1"><text>"URGENT_ASSESSMENT"</text></outputEntry>
+        <outputEntry id="T1_o2"><text>"T1: chest pain reported"</text></outputEntry>
+        <outputEntry id="T1_o3"><text>0</text></outputEntry>
+      </rule>
+      <rule id="Rule_T2">
+        <description>T2: breathing difficulty</description>
+        <inputEntry id="T2_1"><text>-</text></inputEntry>
+        <inputEntry id="T2_2"><text>true</text></inputEntry>
+        <inputEntry id="T2_3"><text>-</text></inputEntry>
+        <inputEntry id="T2_4"><text>-</text></inputEntry>
+        <inputEntry id="T2_5"><text>-</text></inputEntry>
+        <inputEntry id="T2_6"><text>-</text></inputEntry>
+        <inputEntry id="T2_7"><text>-</text></inputEntry>
+        <outputEntry id="T2_o1"><text>"URGENT_ASSESSMENT"</text></outputEntry>
+        <outputEntry id="T2_o2"><text>"T2: breathing difficulty reported"</text></outputEntry>
+        <outputEntry id="T2_o3"><text>0</text></outputEntry>
+      </rule>
+      <rule id="Rule_T3">
+        <description>T3: severe bleeding</description>
+        <inputEntry id="T3_1"><text>-</text></inputEntry>
+        <inputEntry id="T3_2"><text>-</text></inputEntry>
+        <inputEntry id="T3_3"><text>true</text></inputEntry>
+        <inputEntry id="T3_4"><text>-</text></inputEntry>
+        <inputEntry id="T3_5"><text>-</text></inputEntry>
+        <inputEntry id="T3_6"><text>-</text></inputEntry>
+        <inputEntry id="T3_7"><text>-</text></inputEntry>
+        <outputEntry id="T3_o1"><text>"URGENT_ASSESSMENT"</text></outputEntry>
+        <outputEntry id="T3_o2"><text>"T3: severe bleeding reported"</text></outputEntry>
+        <outputEntry id="T3_o3"><text>0</text></outputEntry>
+      </rule>
+      <rule id="Rule_T4">
+        <description>T4: severe pain</description>
+        <inputEntry id="T4_1"><text>-</text></inputEntry>
+        <inputEntry id="T4_2"><text>-</text></inputEntry>
+        <inputEntry id="T4_3"><text>-</text></inputEntry>
+        <inputEntry id="T4_4"><text>&gt;= 8</text></inputEntry>
+        <inputEntry id="T4_5"><text>-</text></inputEntry>
+        <inputEntry id="T4_6"><text>-</text></inputEntry>
+        <inputEntry id="T4_7"><text>-</text></inputEntry>
+        <outputEntry id="T4_o1"><text>"URGENT_ASSESSMENT"</text></outputEntry>
+        <outputEntry id="T4_o2"><text>"T4: pain score 8 or higher"</text></outputEntry>
+        <outputEntry id="T4_o3"><text>0</text></outputEntry>
+      </rule>
+      <rule id="Rule_T5">
+        <description>T5: infant with high fever</description>
+        <inputEntry id="T5_1"><text>-</text></inputEntry>
+        <inputEntry id="T5_2"><text>-</text></inputEntry>
+        <inputEntry id="T5_3"><text>-</text></inputEntry>
+        <inputEntry id="T5_4"><text>-</text></inputEntry>
+        <inputEntry id="T5_5"><text>true</text></inputEntry>
+        <inputEntry id="T5_6"><text>&lt; 2</text></inputEntry>
+        <inputEntry id="T5_7"><text>-</text></inputEntry>
+        <outputEntry id="T5_o1"><text>"URGENT_ASSESSMENT"</text></outputEntry>
+        <outputEntry id="T5_o2"><text>"T5: high fever in a child under 2"</text></outputEntry>
+        <outputEntry id="T5_o3"><text>0</text></outputEntry>
+      </rule>
+      <rule id="Rule_T6">
+        <description>T6: older patient with high fever</description>
+        <inputEntry id="T6_1"><text>-</text></inputEntry>
+        <inputEntry id="T6_2"><text>-</text></inputEntry>
+        <inputEntry id="T6_3"><text>-</text></inputEntry>
+        <inputEntry id="T6_4"><text>-</text></inputEntry>
+        <inputEntry id="T6_5"><text>true</text></inputEntry>
+        <inputEntry id="T6_6"><text>&gt;= 65</text></inputEntry>
+        <inputEntry id="T6_7"><text>-</text></inputEntry>
+        <outputEntry id="T6_o1"><text>"PRIORITY_REVIEW"</text></outputEntry>
+        <outputEntry id="T6_o2"><text>"T6: high fever in a patient aged 65+"</text></outputEntry>
+        <outputEntry id="T6_o3"><text>2</text></outputEntry>
+      </rule>
+      <rule id="Rule_T7">
+        <description>T7: moderate pain</description>
+        <inputEntry id="T7_1"><text>-</text></inputEntry>
+        <inputEntry id="T7_2"><text>-</text></inputEntry>
+        <inputEntry id="T7_3"><text>-</text></inputEntry>
+        <inputEntry id="T7_4"><text>[5..7]</text></inputEntry>
+        <inputEntry id="T7_5"><text>-</text></inputEntry>
+        <inputEntry id="T7_6"><text>-</text></inputEntry>
+        <inputEntry id="T7_7"><text>-</text></inputEntry>
+        <outputEntry id="T7_o1"><text>"PRIORITY_REVIEW"</text></outputEntry>
+        <outputEntry id="T7_o2"><text>"T7: moderate pain (5-7)"</text></outputEntry>
+        <outputEntry id="T7_o3"><text>3</text></outputEntry>
+      </rule>
+      <rule id="Rule_T8">
+        <description>T8: high fever</description>
+        <inputEntry id="T8_1"><text>-</text></inputEntry>
+        <inputEntry id="T8_2"><text>-</text></inputEntry>
+        <inputEntry id="T8_3"><text>-</text></inputEntry>
+        <inputEntry id="T8_4"><text>-</text></inputEntry>
+        <inputEntry id="T8_5"><text>true</text></inputEntry>
+        <inputEntry id="T8_6"><text>-</text></inputEntry>
+        <inputEntry id="T8_7"><text>-</text></inputEntry>
+        <outputEntry id="T8_o1"><text>"PRIORITY_REVIEW"</text></outputEntry>
+        <outputEntry id="T8_o2"><text>"T8: high fever"</text></outputEntry>
+        <outputEntry id="T8_o3"><text>3</text></outputEntry>
+      </rule>
+      <rule id="Rule_T9">
+        <description>T9: elderly patient</description>
+        <inputEntry id="T9_1"><text>-</text></inputEntry>
+        <inputEntry id="T9_2"><text>-</text></inputEntry>
+        <inputEntry id="T9_3"><text>-</text></inputEntry>
+        <inputEntry id="T9_4"><text>-</text></inputEntry>
+        <inputEntry id="T9_5"><text>-</text></inputEntry>
+        <inputEntry id="T9_6"><text>&gt;= 75</text></inputEntry>
+        <inputEntry id="T9_7"><text>-</text></inputEntry>
+        <outputEntry id="T9_o1"><text>"PRIORITY_REVIEW"</text></outputEntry>
+        <outputEntry id="T9_o2"><text>"T9: patient aged 75+"</text></outputEntry>
+        <outputEntry id="T9_o3"><text>5</text></outputEntry>
+      </rule>
+      <rule id="Rule_T10">
+        <description>T10: persistent symptoms</description>
+        <inputEntry id="T10_1"><text>-</text></inputEntry>
+        <inputEntry id="T10_2"><text>-</text></inputEntry>
+        <inputEntry id="T10_3"><text>-</text></inputEntry>
+        <inputEntry id="T10_4"><text>-</text></inputEntry>
+        <inputEntry id="T10_5"><text>-</text></inputEntry>
+        <inputEntry id="T10_6"><text>-</text></inputEntry>
+        <inputEntry id="T10_7"><text>&gt; 14</text></inputEntry>
+        <outputEntry id="T10_o1"><text>"PRIORITY_REVIEW"</text></outputEntry>
+        <outputEntry id="T10_o2"><text>"T10: symptoms for more than 14 days"</text></outputEntry>
+        <outputEntry id="T10_o3"><text>7</text></outputEntry>
+      </rule>
+      <rule id="Rule_T11">
+        <description>T11: default</description>
+        <inputEntry id="T11_1"><text>-</text></inputEntry>
+        <inputEntry id="T11_2"><text>-</text></inputEntry>
+        <inputEntry id="T11_3"><text>-</text></inputEntry>
+        <inputEntry id="T11_4"><text>-</text></inputEntry>
+        <inputEntry id="T11_5"><text>-</text></inputEntry>
+        <inputEntry id="T11_6"><text>-</text></inputEntry>
+        <inputEntry id="T11_7"><text>-</text></inputEntry>
+        <outputEntry id="T11_o1"><text>"ROUTINE"</text></outputEntry>
+        <outputEntry id="T11_o2"><text>"T11: no urgency indicators"</text></outputEntry>
+        <outputEntry id="T11_o3"><text>14</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_Triage">
+      <dmndi:DMNShape id="DMNShape_Triage" dmnElementRef="triage-category-decision">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

@@ -1,0 +1,10 @@
+{
+  "orderId": "ORD-TC02",
+  "customerRef": "CUST-1002",
+  "customerCategory": "REGULAR",
+  "deliveryPreference": "STANDARD",
+  "paymentToken": "tok_test_visa_ok",
+  "shippingPostcode": "560001",
+  "productId": "P-500",
+  "quantity": 5
+}

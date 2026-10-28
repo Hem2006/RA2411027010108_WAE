@@ -1,0 +1,15 @@
+{
+  "requestId": "AR-TC01",
+  "patientRef": "SYN-PAT-0001",
+  "patientAge": 34,
+  "department": "GENERAL_MEDICINE",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "MORNING",
+  "symptomsSummary": "Synthetic: mild cough for 3 days",
+  "painScore": 2,
+  "symptomDurationDays": 3,
+  "chestPain": false,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": false
+}

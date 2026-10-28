@@ -1,0 +1,15 @@
+{
+  "requestId": "AR-TC05",
+  "patientRef": "SYN-PAT-0005",
+  "patientAge": 6,
+  "department": "PAEDIATRICS",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "MORNING",
+  "symptomsSummary": "Synthetic: earache",
+  "painScore": 3,
+  "symptomDurationDays": 3,
+  "chestPain": false,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": false
+}

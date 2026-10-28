@@ -1,0 +1,22 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": { "name": "Camunda Modeler", "version": "5.40.0" },
+  "schemaVersion": 18,
+  "id": "order-verification-form",
+  "type": "default",
+  "components": [
+    { "type": "text", "id": "Text_Header", "text": "## Verify order {{orderId}}\nCustomer **{{customerRef}}** ({{customerCategory}}), delivery **{{deliveryPreference}}**" },
+    { "type": "textfield", "id": "Field_PriorityReason", "key": "priorityReason", "label": "Why verification is needed", "readonly": true },
+    { "type": "textfield", "id": "Field_Product", "key": "productName", "label": "Product", "readonly": true, "layout": { "columns": 8 } },
+    { "type": "number", "id": "Field_Quantity", "key": "quantity", "label": "Quantity", "readonly": true, "layout": { "columns": 4 } },
+    { "type": "number", "id": "Field_OrderTotal", "key": "orderTotal", "label": "Order total", "readonly": true, "decimalDigits": 2, "layout": { "columns": 6 } },
+    { "type": "textfield", "id": "Field_Priority", "key": "deliveryPriority", "label": "Delivery priority", "readonly": true, "layout": { "columns": 6 } },
+    {
+      "type": "radio", "id": "Field_VerificationDecision", "key": "verificationDecision", "label": "Verification result",
+      "validate": { "required": true },
+      "values": [ { "label": "Approve order", "value": "APPROVED" }, { "label": "Reject order", "value": "REJECTED" } ]
+    },
+    { "type": "textarea", "id": "Field_VerificationNotes", "key": "verificationNotes", "label": "Notes", "validate": { "required": true } }
+  ]
+}

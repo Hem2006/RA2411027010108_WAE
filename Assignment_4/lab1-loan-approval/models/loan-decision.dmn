@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_LoanDecision" name="Loan decision" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.40.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="loan-eligibility-decision" name="Loan eligibility decision">
+    <description>Educational rules only. Hit policy FIRST: rules are checked top to bottom and the first match wins. Rejection rules come first, then the automatic-approval rule, then a catch-all manual review.</description>
+    <decisionTable id="DecisionTable_LoanEligibility" hitPolicy="FIRST">
+      <input id="Input_Employment" label="Employment status">
+        <inputExpression id="InputExpression_Employment" typeRef="string">
+          <text>employmentStatus</text>
+        </inputExpression>
+      </input>
+      <input id="Input_CreditScore" label="Credit score">
+        <inputExpression id="InputExpression_CreditScore" typeRef="number">
+          <text>creditScore</text>
+        </inputExpression>
+      </input>
+      <input id="Input_Dti" label="Debt-to-income ratio">
+        <inputExpression id="InputExpression_Dti" typeRef="number">
+          <text>debtToIncomeRatio</text>
+        </inputExpression>
+      </input>
+      <input id="Input_Lti" label="Loan-to-annual-income ratio">
+        <inputExpression id="InputExpression_Lti" typeRef="number">
+          <text>loanToIncomeRatio</text>
+        </inputExpression>
+      </input>
+      <input id="Input_LoanAmount" label="Loan amount">
+        <inputExpression id="InputExpression_LoanAmount" typeRef="number">
+          <text>loanAmount</text>
+        </inputExpression>
+      </input>
+      <output id="Output_Decision" label="Decision" name="decision" typeRef="string">
+        <outputValues id="UnaryTests_Decision">
+          <text>"APPROVED","REJECTED","MANUAL_REVIEW"</text>
+        </outputValues>
+      </output>
+      <output id="Output_Reason" label="Reason" name="reason" typeRef="string" />
+      <rule id="Rule_R1_Unemployed">
+        <description>R1: no regular income</description>
+        <inputEntry id="R1_e"><text>"UNEMPLOYED"</text></inputEntry>
+        <inputEntry id="R1_c"><text>-</text></inputEntry>
+        <inputEntry id="R1_d"><text>-</text></inputEntry>
+        <inputEntry id="R1_l"><text>-</text></inputEntry>
+        <inputEntry id="R1_a"><text>-</text></inputEntry>
+        <outputEntry id="R1_o1"><text>"REJECTED"</text></outputEntry>
+        <outputEntry id="R1_o2"><text>"R1: applicant has no regular income"</text></outputEntry>
+      </rule>
+      <rule id="Rule_R2_LowScore">
+        <description>R2: credit score below 550</description>
+        <inputEntry id="R2_e"><text>-</text></inputEntry>
+        <inputEntry id="R2_c"><text>&lt; 550</text></inputEntry>
+        <inputEntry id="R2_d"><text>-</text></inputEntry>
+        <inputEntry id="R2_l"><text>-</text></inputEntry>
+        <inputEntry id="R2_a"><text>-</text></inputEntry>
+        <outputEntry id="R2_o1"><text>"REJECTED"</text></outputEntry>
+        <outputEntry id="R2_o2"><text>"R2: credit score below minimum of 550"</text></outputEntry>
+      </rule>
+      <rule id="Rule_R3_HighDti">
+        <description>R3: debt-to-income above 50%</description>
+        <inputEntry id="R3_e"><text>-</text></inputEntry>
+        <inputEntry id="R3_c"><text>-</text></inputEntry>
+        <inputEntry id="R3_d"><text>&gt; 0.5</text></inputEntry>
+        <inputEntry id="R3_l"><text>-</text></inputEntry>
+        <inputEntry id="R3_a"><text>-</text></inputEntry>
+        <outputEntry id="R3_o1"><text>"REJECTED"</text></outputEntry>
+        <outputEntry id="R3_o2"><text>"R3: debt-to-income ratio above 50%"</text></outputEntry>
+      </rule>
+      <rule id="Rule_R4_HighLti">
+        <description>R4: loan larger than 5x annual income</description>
+        <inputEntry id="R4_e"><text>-</text></inputEntry>
+        <inputEntry id="R4_c"><text>-</text></inputEntry>
+        <inputEntry id="R4_d"><text>-</text></inputEntry>
+        <inputEntry id="R4_l"><text>&gt; 5</text></inputEntry>
+        <inputEntry id="R4_a"><text>-</text></inputEntry>
+        <outputEntry id="R4_o1"><text>"REJECTED"</text></outputEntry>
+        <outputEntry id="R4_o2"><text>"R4: loan exceeds 5x annual income"</text></outputEntry>
+      </rule>
+      <rule id="Rule_R5_AutoApprove">
+        <description>R5: automatic approval criteria</description>
+        <inputEntry id="R5_e"><text>"EMPLOYED","SELF_EMPLOYED"</text></inputEntry>
+        <inputEntry id="R5_c"><text>&gt;= 700</text></inputEntry>
+        <inputEntry id="R5_d"><text>&lt;= 0.35</text></inputEntry>
+        <inputEntry id="R5_l"><text>&lt;= 3</text></inputEntry>
+        <inputEntry id="R5_a"><text>&lt;= 50000</text></inputEntry>
+        <outputEntry id="R5_o1"><text>"APPROVED"</text></outputEntry>
+        <outputEntry id="R5_o2"><text>"R5: meets all automatic approval criteria"</text></outputEntry>
+      </rule>
+      <rule id="Rule_R6_Manual">
+        <description>R6: everything else goes to a loan officer</description>
+        <inputEntry id="R6_e"><text>-</text></inputEntry>
+        <inputEntry id="R6_c"><text>-</text></inputEntry>
+        <inputEntry id="R6_d"><text>-</text></inputEntry>
+        <inputEntry id="R6_l"><text>-</text></inputEntry>
+        <inputEntry id="R6_a"><text>-</text></inputEntry>
+        <outputEntry id="R6_o1"><text>"MANUAL_REVIEW"</text></outputEntry>
+        <outputEntry id="R6_o2"><text>"R6: borderline application, needs loan officer review"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_LoanDecision">
+      <dmndi:DMNShape id="DMNShape_LoanEligibility" dmnElementRef="loan-eligibility-decision">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

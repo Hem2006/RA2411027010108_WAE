@@ -1,0 +1,15 @@
+{
+  "requestId": "AR-TC04",
+  "patientRef": "SYN-PAT-0004",
+  "patientAge": 29,
+  "department": "DERMATOLOGY",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "AFTERNOON",
+  "symptomsSummary": "Synthetic: itchy rash on forearm",
+  "painScore": 2,
+  "symptomDurationDays": 10,
+  "chestPain": false,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": false
+}

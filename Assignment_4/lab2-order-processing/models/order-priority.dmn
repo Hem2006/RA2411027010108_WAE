@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_OrderPriority" name="Order priority" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.40.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="order-priority-decision" name="Order priority decision">
+    <description>Hit policy FIRST. Rules P1-P2 flag orders for manual verification (high value / new customer). P3-P8 set the delivery priority from customer category and delivery preference.</description>
+    <decisionTable id="DecisionTable_OrderPriority" hitPolicy="FIRST">
+      <input id="Input_OrderTotal" label="Order total">
+        <inputExpression id="InputExpression_OrderTotal" typeRef="number">
+          <text>orderTotal</text>
+        </inputExpression>
+      </input>
+      <input id="Input_Category" label="Customer category">
+        <inputExpression id="InputExpression_Category" typeRef="string">
+          <text>customerCategory</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_Category">
+          <text>"NEW","REGULAR","GOLD","PLATINUM"</text>
+        </inputValues>
+      </input>
+      <input id="Input_Delivery" label="Delivery preference">
+        <inputExpression id="InputExpression_Delivery" typeRef="string">
+          <text>deliveryPreference</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_Delivery">
+          <text>"STANDARD","EXPRESS","SAME_DAY"</text>
+        </inputValues>
+      </input>
+      <output id="Output_Priority" label="Delivery priority" name="deliveryPriority" typeRef="string">
+        <outputValues id="UnaryTests_Priority">
+          <text>"CRITICAL","HIGH","MEDIUM","LOW"</text>
+        </outputValues>
+      </output>
+      <output id="Output_Verification" label="Manual verification required" name="manualVerificationRequired" typeRef="boolean" />
+      <output id="Output_Reason" label="Reason" name="priorityReason" typeRef="string" />
+      <rule id="Rule_P1">
+        <description>P1: high-value order</description>
+        <inputEntry id="P1_t"><text>&gt; 5000</text></inputEntry>
+        <inputEntry id="P1_c"><text>-</text></inputEntry>
+        <inputEntry id="P1_d"><text>-</text></inputEntry>
+        <outputEntry id="P1_o1"><text>"HIGH"</text></outputEntry>
+        <outputEntry id="P1_o2"><text>true</text></outputEntry>
+        <outputEntry id="P1_o3"><text>"P1: order total above 5,000 needs manual verification"</text></outputEntry>
+      </rule>
+      <rule id="Rule_P2">
+        <description>P2: new customer with a large first order</description>
+        <inputEntry id="P2_t"><text>&gt; 2000</text></inputEntry>
+        <inputEntry id="P2_c"><text>"NEW"</text></inputEntry>
+        <inputEntry id="P2_d"><text>-</text></inputEntry>
+        <outputEntry id="P2_o1"><text>"MEDIUM"</text></outputEntry>
+        <outputEntry id="P2_o2"><text>true</text></outputEntry>
+        <outputEntry id="P2_o3"><text>"P2: new customer order above 2,000 needs manual verification"</text></outputEntry>
+      </rule>
+      <rule id="Rule_P3">
+        <description>P3: platinum same-day</description>
+        <inputEntry id="P3_t"><text>-</text></inputEntry>
+        <inputEntry id="P3_c"><text>"PLATINUM"</text></inputEntry>
+        <inputEntry id="P3_d"><text>"SAME_DAY"</text></inputEntry>
+        <outputEntry id="P3_o1"><text>"CRITICAL"</text></outputEntry>
+        <outputEntry id="P3_o2"><text>false</text></outputEntry>
+        <outputEntry id="P3_o3"><text>"P3: platinum customer, same-day delivery"</text></outputEntry>
+      </rule>
+      <rule id="Rule_P4">
+        <description>P4: same-day delivery</description>
+        <inputEntry id="P4_t"><text>-</text></inputEntry>
+        <inputEntry id="P4_c"><text>-</text></inputEntry>
+        <inputEntry id="P4_d"><text>"SAME_DAY"</text></inputEntry>
+        <outputEntry id="P4_o1"><text>"HIGH"</text></outputEntry>
+        <outputEntry id="P4_o2"><text>false</text></outputEntry>
+        <outputEntry id="P4_o3"><text>"P4: same-day delivery requested"</text></outputEntry>
+      </rule>
+      <rule id="Rule_P5">
+        <description>P5: loyal customer, express</description>
+        <inputEntry id="P5_t"><text>-</text></inputEntry>
+        <inputEntry id="P5_c"><text>"GOLD","PLATINUM"</text></inputEntry>
+        <inputEntry id="P5_d"><text>"EXPRESS"</text></inputEntry>
+        <outputEntry id="P5_o1"><text>"HIGH"</text></outputEntry>
+        <outputEntry id="P5_o2"><text>false</text></outputEntry>
+        <outputEntry id="P5_o3"><text>"P5: gold/platinum customer, express delivery"</text></outputEntry>
+      </rule>
+      <rule id="Rule_P6">
+        <description>P6: express delivery</description>
+        <inputEntry id="P6_t"><text>-</text></inputEntry>
+        <inputEntry id="P6_c"><text>-</text></inputEntry>
+        <inputEntry id="P6_d"><text>"EXPRESS"</text></inputEntry>
+        <outputEntry id="P6_o1"><text>"MEDIUM"</text></outputEntry>
+        <outputEntry id="P6_o2"><text>false</text></outputEntry>
+        <outputEntry id="P6_o3"><text>"P6: express delivery requested"</text></outputEntry>
+      </rule>
+      <rule id="Rule_P7">
+        <description>P7: valuable order from a loyal customer</description>
+        <inputEntry id="P7_t"><text>&gt; 1000</text></inputEntry>
+        <inputEntry id="P7_c"><text>"GOLD","PLATINUM"</text></inputEntry>
+        <inputEntry id="P7_d"><text>-</text></inputEntry>
+        <outputEntry id="P7_o1"><text>"MEDIUM"</text></outputEntry>
+        <outputEntry id="P7_o2"><text>false</text></outputEntry>
+        <outputEntry id="P7_o3"><text>"P7: gold/platinum customer, order above 1,000"</text></outputEntry>
+      </rule>
+      <rule id="Rule_P8">
+        <description>P8: default</description>
+        <inputEntry id="P8_t"><text>-</text></inputEntry>
+        <inputEntry id="P8_c"><text>-</text></inputEntry>
+        <inputEntry id="P8_d"><text>-</text></inputEntry>
+        <outputEntry id="P8_o1"><text>"LOW"</text></outputEntry>
+        <outputEntry id="P8_o2"><text>false</text></outputEntry>
+        <outputEntry id="P8_o3"><text>"P8: standard order"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_OrderPriority">
+      <dmndi:DMNShape id="DMNShape_OrderPriority" dmnElementRef="order-priority-decision">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

@@ -1,0 +1,15 @@
+{
+  "requestId": "AR-TC06",
+  "patientRef": "SYN-PAT-0006",
+  "patientAge": 80,
+  "department": "GENERAL_MEDICINE",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "ANY",
+  "symptomsSummary": "Synthetic: fever and confusion",
+  "painScore": 4,
+  "symptomDurationDays": 2,
+  "chestPain": false,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": true
+}

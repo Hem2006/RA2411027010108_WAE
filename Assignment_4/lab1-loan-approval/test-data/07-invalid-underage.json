@@ -1,0 +1,13 @@
+{
+  "applicationId": "LA-TC07",
+  "age": 17,
+  "email": "applicant@example.com",
+  "loanTermMonths": 48,
+  "employmentStatus": "STUDENT",
+  "loanPurpose": "HOME_IMPROVEMENT",
+  "applicantId": "SYN-APP-1005",
+  "applicantName": "Gil Synthetic",
+  "loanAmount": 5000,
+  "monthlyIncome": 1500,
+  "monthlyDebt": 0
+}

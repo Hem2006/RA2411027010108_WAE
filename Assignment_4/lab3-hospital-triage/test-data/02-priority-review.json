@@ -1,0 +1,15 @@
+{
+  "requestId": "AR-TC02",
+  "patientRef": "SYN-PAT-0002",
+  "patientAge": 52,
+  "department": "GENERAL_MEDICINE",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "ANY",
+  "symptomsSummary": "Synthetic: moderate lower back pain",
+  "painScore": 6,
+  "symptomDurationDays": 5,
+  "chestPain": false,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": false
+}

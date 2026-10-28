@@ -1,0 +1,13 @@
+{
+  "applicationId": "LA-TC04",
+  "age": 34,
+  "email": "applicant@example.com",
+  "loanTermMonths": 48,
+  "employmentStatus": "EMPLOYED",
+  "loanPurpose": "HOME_IMPROVEMENT",
+  "applicantId": "SYN-ERR-0001",
+  "applicantName": "Dana Synthetic",
+  "loanAmount": 12000,
+  "monthlyIncome": 5000,
+  "monthlyDebt": 300
+}

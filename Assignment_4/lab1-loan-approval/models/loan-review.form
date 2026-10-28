@@ -1,0 +1,25 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": { "name": "Camunda Modeler", "version": "5.40.0" },
+  "schemaVersion": 18,
+  "id": "loan-review-form",
+  "type": "default",
+  "components": [
+    { "type": "text", "id": "Text_Header", "text": "## Loan application review\nApplication **{{applicationId}}** for **{{applicantName}}** ({{applicantId}})" },
+    { "type": "textfield", "id": "Field_ReviewReason", "key": "reviewReason", "label": "Why this needs review", "readonly": true },
+    { "type": "textfield", "id": "Field_DecisionReason", "key": "decisionReason", "label": "Rule / system reason", "readonly": true },
+    { "type": "number", "id": "Field_LoanAmount", "key": "loanAmount", "label": "Requested loan amount", "readonly": true, "layout": { "columns": 4 } },
+    { "type": "number", "id": "Field_MonthlyIncome", "key": "monthlyIncome", "label": "Monthly income", "readonly": true, "layout": { "columns": 4 } },
+    { "type": "number", "id": "Field_MonthlyDebt", "key": "monthlyDebt", "label": "Monthly debt", "readonly": true, "layout": { "columns": 4 } },
+    { "type": "number", "id": "Field_CreditScore", "key": "creditScore", "label": "Credit score (empty if API failed)", "readonly": true, "layout": { "columns": 4 } },
+    { "type": "number", "id": "Field_Dti", "key": "debtToIncomeRatio", "label": "Debt-to-income ratio", "readonly": true, "decimalDigits": 2, "layout": { "columns": 4 } },
+    { "type": "number", "id": "Field_Lti", "key": "loanToIncomeRatio", "label": "Loan / annual income", "readonly": true, "decimalDigits": 2, "layout": { "columns": 4 } },
+    {
+      "type": "radio", "id": "Field_ReviewDecision", "key": "reviewDecision", "label": "Your decision",
+      "validate": { "required": true },
+      "values": [ { "label": "Approve", "value": "APPROVED" }, { "label": "Reject", "value": "REJECTED" } ]
+    },
+    { "type": "textarea", "id": "Field_ReviewComments", "key": "reviewComments", "label": "Comments", "validate": { "required": true } }
+  ]
+}

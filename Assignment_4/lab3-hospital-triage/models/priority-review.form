@@ -1,0 +1,24 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": { "name": "Camunda Modeler", "version": "5.40.0" },
+  "schemaVersion": 18,
+  "id": "priority-review-form",
+  "type": "default",
+  "components": [
+    { "type": "text", "id": "Text_Header", "text": "## Priority staff review\nRequest **{{requestId}}** for synthetic patient **{{patientRef}}** (age {{patientAge}}), department **{{department}}**" },
+    { "type": "textfield", "id": "Field_TriageReason", "key": "triageReason", "label": "Triage rule", "readonly": true },
+    { "type": "textarea", "id": "Field_Symptoms", "key": "symptomsSummary", "label": "Symptoms summary (synthetic)", "readonly": true },
+    { "type": "number", "id": "Field_Pain", "key": "painScore", "label": "Pain score", "readonly": true, "layout": { "columns": 6 } },
+    { "type": "number", "id": "Field_Duration", "key": "symptomDurationDays", "label": "Symptom duration (days)", "readonly": true, "layout": { "columns": 6 } },
+    {
+      "type": "radio", "id": "Field_StaffDecision", "key": "staffDecision", "label": "Decision",
+      "validate": { "required": true },
+      "values": [
+        { "label": "Approve - book a priority appointment", "value": "APPROVE_SCHEDULING" },
+        { "label": "Escalate to immediate clinical assessment", "value": "ESCALATE_URGENT" }
+      ]
+    },
+    { "type": "textarea", "id": "Field_StaffNotes", "key": "staffNotes", "label": "Review notes", "validate": { "required": true } }
+  ]
+}

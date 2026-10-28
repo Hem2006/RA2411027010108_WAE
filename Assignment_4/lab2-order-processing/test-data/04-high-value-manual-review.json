@@ -1,0 +1,10 @@
+{
+  "orderId": "ORD-TC04",
+  "customerRef": "CUST-1004",
+  "customerCategory": "GOLD",
+  "deliveryPreference": "SAME_DAY",
+  "paymentToken": "tok_test_visa_ok",
+  "shippingPostcode": "560001",
+  "productId": "P-400",
+  "quantity": 3
+}

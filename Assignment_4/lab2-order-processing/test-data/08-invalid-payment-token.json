@@ -1,0 +1,10 @@
+{
+  "orderId": "ORD-TC08",
+  "customerRef": "CUST-1008",
+  "customerCategory": "REGULAR",
+  "deliveryPreference": "STANDARD",
+  "paymentToken": "pm_card_visa",
+  "shippingPostcode": "560001",
+  "productId": "P-100",
+  "quantity": 1
+}

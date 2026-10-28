@@ -1,0 +1,24 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": { "name": "Camunda Modeler", "version": "5.40.0" },
+  "schemaVersion": 18,
+  "id": "urgent-assessment-form",
+  "type": "default",
+  "components": [
+    { "type": "text", "id": "Text_Header", "text": "## Immediate clinical assessment (simulation)\nRequest **{{requestId}}** for synthetic patient **{{patientRef}}** (age {{patientAge}})" },
+    { "type": "textfield", "id": "Field_TriageReason", "key": "triageReason", "label": "Triage rule", "readonly": true },
+    { "type": "textfield", "id": "Field_StaffNotes", "key": "staffNotes", "label": "Notes from priority review (if escalated)", "readonly": true },
+    { "type": "textarea", "id": "Field_Symptoms", "key": "symptomsSummary", "label": "Symptoms summary (synthetic)", "readonly": true },
+    {
+      "type": "radio", "id": "Field_AssessmentOutcome", "key": "assessmentOutcome", "label": "Assessment outcome",
+      "validate": { "required": true },
+      "values": [
+        { "label": "Directed to emergency department", "value": "DIRECTED_TO_EMERGENCY" },
+        { "label": "Same-day clinic slot arranged by clinician", "value": "SAME_DAY_SLOT_ARRANGED" },
+        { "label": "Assessed - not urgent, callback arranged", "value": "CALLBACK_ARRANGED" }
+      ]
+    },
+    { "type": "textarea", "id": "Field_ClinicianNotes", "key": "clinicianNotes", "label": "Clinician notes", "validate": { "required": true } }
+  ]
+}

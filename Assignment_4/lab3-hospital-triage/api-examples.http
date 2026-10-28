@@ -1,0 +1,58 @@
+### Lab 3 – REST examples (VS Code "REST Client" extension or IntelliJ HTTP client)
+### Synthetic data only. Set preferredDate to a future date.
+@app = http://localhost:8083
+
+### 1. Submit an appointment request (creates a process instance)
+POST {{app}}/api/appointment-requests
+Content-Type: application/json
+
+{
+  "requestId": "AR-TC01",
+  "patientRef": "SYN-PAT-0001",
+  "patientAge": 34,
+  "department": "GENERAL_MEDICINE",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "MORNING",
+  "symptomsSummary": "Synthetic: mild cough for 3 days",
+  "painScore": 2,
+  "symptomDurationDays": 3,
+  "chestPain": false,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": false
+}
+
+# Response 201:
+# {"processInstanceKey": 2251799813687422, "processDefinitionVersion": 1, "requestId": "AR-TC01"}
+
+### 2. Mock scheduling API – slot search (the call the REST Connector makes)
+GET {{app}}/api/scheduling/slots?department=GENERAL_MEDICINE&fromDate=2026-11-02&timeOfDay=MORNING&withinDays=3
+Accept: application/json
+X-Request-Id: AR-DEMO
+
+# Response 200:
+# {"department":"GENERAL_MEDICINE","fromDate":"2026-11-02","withinDays":3,"slots":[
+#   {"slotId":"GEN-20261103-0900","start":"2026-11-03T09:00","clinician":"Dr Synthetic A"},
+#   {"slotId":"GEN-20261103-1030","start":"2026-11-03T10:30","clinician":"Dr Synthetic B"},
+#   {"slotId":"GEN-20261104-0900","start":"2026-11-04T09:00","clinician":"Dr Synthetic B"},
+#   {"slotId":"GEN-20261104-1030","start":"2026-11-04T10:30","clinician":"Dr Synthetic C"},
+#   {"slotId":"GEN-20261105-0900","start":"2026-11-05T09:00","clinician":"Dr Synthetic C"}]}
+
+### 3. Fully booked department
+GET {{app}}/api/scheduling/slots?department=DERMATOLOGY&fromDate=2026-11-02&timeOfDay=AFTERNOON&withinDays=14
+
+# Response 200: {"department":"DERMATOLOGY","fromDate":"2026-11-02","withinDays":14,"slots":[]}
+
+### 4. Book a slot (the call the lab3-book-appointment worker makes)
+POST {{app}}/api/scheduling/bookings
+Content-Type: application/json
+
+{ "slotId": "GEN-20261105-0900", "patientRef": "SYN-PAT-0099", "requestId": "AR-DEMO" }
+
+# Response 200: {"bookingId":"BK-8C4D4ADD","slotId":"GEN-20261105-0900","patientRef":"SYN-PAT-0099","status":"CONFIRMED"}
+# Same slot again -> 409 Conflict
+
+### 5. Simulate the scheduling outage / corrective action
+PUT {{app}}/api/mock/scheduling/available/false
+###
+PUT {{app}}/api/mock/scheduling/available/true

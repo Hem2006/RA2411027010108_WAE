@@ -1,0 +1,25 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: lab2-order-processing
+
+# Default profile: local Camunda 8 Run (no Docker) on this machine.
+# For Camunda 8 SaaS start with --spring.profiles.active=saas (see application-saas.yaml).
+camunda:
+  client:
+    mode: self-managed
+    grpc-address: http://localhost:26500
+    rest-address: http://localhost:8080
+    auth:
+      method: none
+
+lab:
+  deploy:
+    # Deploys every .bpmn/.dmn/.form file from models-dir on startup.
+    enabled: true
+    models-dir: ../models
+  inventory:
+    # The "Check inventory" worker calls the simulated inventory service hosted by this same app.
+    base-url: http://localhost:${server.port}

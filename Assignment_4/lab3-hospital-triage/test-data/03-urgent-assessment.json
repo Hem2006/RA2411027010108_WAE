@@ -1,0 +1,15 @@
+{
+  "requestId": "AR-TC03",
+  "patientRef": "SYN-PAT-0003",
+  "patientAge": 61,
+  "department": "CARDIOLOGY",
+  "preferredDate": "2026-11-03",
+  "preferredTimeOfDay": "ANY",
+  "symptomsSummary": "Synthetic: chest tightness since this morning",
+  "painScore": 7,
+  "symptomDurationDays": 0,
+  "chestPain": true,
+  "breathingDifficulty": false,
+  "severeBleeding": false,
+  "highFever": false
+}

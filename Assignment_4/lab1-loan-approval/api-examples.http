@@ -1,0 +1,56 @@
+### Lab 1 – REST examples (VS Code "REST Client" extension or IntelliJ HTTP client)
+@app = http://localhost:8081
+
+### 1. Start a loan application (creates a process instance)
+POST {{app}}/api/loan-applications
+Content-Type: application/json
+
+{
+  "applicationId": "LA-TC01",
+  "applicantId": "SYN-APP-1001",
+  "applicantName": "Asha Synthetic",
+  "age": 34,
+  "email": "applicant@example.com",
+  "loanAmount": 20000,
+  "loanTermMonths": 48,
+  "monthlyIncome": 6500,
+  "monthlyDebt": 400,
+  "employmentStatus": "EMPLOYED",
+  "loanPurpose": "HOME_IMPROVEMENT"
+}
+
+# Response 201:
+# {"processInstanceKey": 2251799813685649, "processDefinitionVersion": 1, "applicationId": "LA-TC01"}
+
+### 2. Mock credit-assessment API – the call the REST Connector makes
+POST {{app}}/api/credit/assessments
+Content-Type: application/json
+X-Correlation-Id: LA-TC01
+
+{
+  "applicationId": "LA-TC01",
+  "applicantId": "SYN-APP-1001",
+  "applicantName": "Asha Synthetic",
+  "loanAmount": 20000,
+  "monthlyIncome": 6500,
+  "monthlyDebt": 400
+}
+
+# Response 200:
+# {"assessmentId":"CA-75F0E0B3","applicantId":"SYN-APP-1001","creditScore":782,"riskBand":"LOW",
+#  "existingDefaults":0,"assessedAt":"2026-10-28T08:28:37.051627700+05:30"}
+
+### 3. Simulated API error (any applicantId starting with SYN-ERR)
+POST {{app}}/api/credit/assessments
+Content-Type: application/json
+
+{ "applicantId": "SYN-ERR-0001" }
+
+# Response 503:
+# {"error":"CREDIT_BUREAU_UNAVAILABLE","message":"Simulated credit bureau outage"}
+
+### 4. Switch the whole mock API into failure mode (ERROR | TIMEOUT | NORMAL)
+PUT {{app}}/api/mock/credit/mode/ERROR
+
+### 5. Back to normal
+PUT {{app}}/api/mock/credit/mode/NORMAL

@@ -1,0 +1,22 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": { "name": "Camunda Modeler", "version": "5.40.0" },
+  "schemaVersion": 18,
+  "id": "manual-scheduling-form",
+  "type": "default",
+  "components": [
+    { "type": "text", "id": "Text_Header", "text": "## No suitable slot found\nRequest **{{requestId}}** for synthetic patient **{{patientRef}}**: department **{{department}}**, preferred from **{{preferredDate}}** ({{preferredTimeOfDay}}), triage **{{triageCategory}}** (max wait {{maxWaitDays}} days)" },
+    { "type": "number", "id": "Field_SlotCount", "key": "slotCount", "label": "Slots returned by scheduling API", "readonly": true },
+    {
+      "type": "radio", "id": "Field_SchedulingOutcome", "key": "schedulingOutcome", "label": "Scheduling action",
+      "validate": { "required": true },
+      "values": [
+        { "label": "Added to waiting list", "value": "WAITLISTED" },
+        { "label": "Alternative clinic / date arranged by phone", "value": "ALTERNATIVE_ARRANGED" },
+        { "label": "Referred to another hospital", "value": "REFERRED_EXTERNALLY" }
+      ]
+    },
+    { "type": "textarea", "id": "Field_SchedulingNotes", "key": "schedulingNotes", "label": "Notes", "validate": { "required": true } }
+  ]
+}

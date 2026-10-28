@@ -1,0 +1,66 @@
+### Lab 2 – REST examples (VS Code "REST Client" extension or IntelliJ HTTP client)
+@app = http://localhost:8082
+
+### 1. Place an order (creates a process instance)
+POST {{app}}/api/orders
+Content-Type: application/json
+
+{
+  "orderId": "ORD-TC01",
+  "customerRef": "CUST-1001",
+  "customerCategory": "REGULAR",
+  "productId": "P-200",
+  "quantity": 2,
+  "deliveryPreference": "EXPRESS",
+  "paymentToken": "tok_test_visa_ok",
+  "shippingPostcode": "560001"
+}
+
+# Response 201:
+# {"processInstanceKey": 2251799813686307, "processDefinitionVersion": 1, "orderId": "ORD-TC01"}
+
+### 2. Mock payment gateway – the call the REST Connector makes
+POST {{app}}/api/payments
+Content-Type: application/json
+Idempotency-Key: ORD-TC01
+
+{
+  "orderId": "ORD-TC01",
+  "customerRef": "CUST-1001",
+  "amount": 209.37,
+  "currency": "USD",
+  "paymentToken": "tok_test_visa_ok"
+}
+
+# Response 200:
+# {"paymentId":"PAY-B0538C3A","orderId":"ORD-TC01","amount":209.37,"currency":"USD","status":"APPROVED",
+#  "declineReason":null,"processedAt":"2026-10-28T08:24:26.464+05:30"}
+
+### 3. Declined payment
+POST {{app}}/api/payments
+Content-Type: application/json
+Idempotency-Key: ORD-DEMO
+
+{ "orderId": "ORD-DEMO", "customerRef": "CUST-1003", "amount": 31.99, "currency": "USD", "paymentToken": "tok_test_declined" }
+
+# Response 200:
+# {"paymentId":"PAY-496A6B7F","orderId":"ORD-DEMO","amount":31.99,"currency":"USD","status":"DECLINED",
+#  "declineReason":"CARD_DECLINED","processedAt":"2026-10-28T08:28:37.275+05:30"}
+
+### 4. Simulated inventory service – stock check (called by the lab2-check-inventory worker)
+GET {{app}}/api/inventory/P-500?quantity=5
+
+# Response 200:
+# {"productId":"P-500","requested":5,"onHand":3,"available":false,"warehouse":"WH-SYNTH-01"}
+
+### 5. Simulate outages / corrective action
+PUT {{app}}/api/mock/payments/available/false
+###
+PUT {{app}}/api/mock/inventory/available/false
+###
+PUT {{app}}/api/mock/payments/available/true
+###
+PUT {{app}}/api/mock/inventory/available/true
+
+### 6. Reset stock of a product (e.g. after many test runs)
+PUT {{app}}/api/mock/inventory/stock/P-400/8

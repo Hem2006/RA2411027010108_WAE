@@ -1,0 +1,10 @@
+{
+  "orderId": "ORD-TC03",
+  "customerRef": "CUST-1003",
+  "customerCategory": "REGULAR",
+  "deliveryPreference": "STANDARD",
+  "paymentToken": "tok_test_declined",
+  "shippingPostcode": "560001",
+  "productId": "P-100",
+  "quantity": 1
+}
